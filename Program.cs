@@ -1,111 +1,80 @@
 ﻿// See https://aka.ms/new-console-template for more information
-class SteppedArray
+class Program
 {
-    public int[][] array;
-    public int[] lengths = new int[100];
-    Random rnd = new Random();
-    public bool WayOfInputtingTheArray = false;
-    public SteppedArray(int colsN, int[] lengths)
+    static void Main()
     {
-        array = new int[colsN][];
-        for (int i = 0; i < colsN; i++)
+        Console.WriteLine("Двумерные  массивы");
+        Console.WriteLine("Введите количество элементов в строке.");
+        int linesM = int.Parse(Console.ReadLine());
+        Console.WriteLine("Введите количество элементов в столбце.");
+        int colomnsN = int.Parse(Console.ReadLine());
+        bool WayInpArr2D;
+        Console.WriteLine("Хотите сами ввести массив? + = да, - = нет");
+        if (Console.ReadLine() == "+")
         {
-            array[i] = new int[lengths[i]];
-        }
-    }
-
-    public void SteppedINP(bool WayOfInputtingTheArray, int colN, int[] lengths)
-    {
-        if (WayOfInputtingTheArray == false)
-        {
-            for (int i = 0; i < colN; i++)
-            {
-                for (int j = 0; j < lengths[i]; j++)
-                {
-                    array[i][j] = rnd.Next(-100, 100);
-                }
-
-            }
+            WayInpArr2D = true;
         }
         else
         {
-            for (int i = 0; i < colN; i++)
-            {
-                Console.WriteLine("Введите элементы строки " + (i + 1));
-                for (int j = 0; j < lengths[i]; j++)
-                {
-                    array[i][j] = int.Parse(Console.ReadLine());
-                }
-
-            }
+            WayInpArr2D = false;
         }
+        TwoDimentionArr twoD = new TwoDimentionArr(colomnsN, linesM);
+        twoD.TwoDimentionArrINP(WayInpArr2D, colomnsN, linesM);
+        Console.WriteLine("Массив: ");
+        twoD.TwoDimentionArrOUTPUT(colomnsN, linesM);
+        Console.WriteLine("Среднее арифметическое элементов: " + twoD.countAverage(colomnsN, linesM));
+        Console.WriteLine("Массив, в котором элементы четных строк напечатаны в обратном порядке: ");
+        twoD.PrintArrBackw(colomnsN, linesM);
 
-    }
+        //одномерные
+        Console.WriteLine("Одномерные  массивы");
+        Console.WriteLine("Введите количество элементов.");
+        int ElementsNumber = int.Parse(Console.ReadLine());
+        Console.WriteLine("Хотите сами ввести массив? + = да, - = нет");
+        bool WayInpArr1D;
+        if (Console.ReadLine() == "+")
+        {
+            WayInpArr1D = true;
+        }
+        else
+        {
+            WayInpArr1D = false;
+        }
+        OneDimentionArr oneD = new OneDimentionArr(ElementsNumber, WayInpArr1D);
+        oneD.OneDimentionArrINP(ElementsNumber, WayInpArr1D);
+        oneD.oneDimentionArrOUTPUT(ElementsNumber);
+        Console.WriteLine("Среднее арифметическое элементов: " + oneD.countAverage(ElementsNumber));
+        Console.WriteLine("Массив, из которого удалили элементы, большие 100 по модулю: " + oneD.DeleteMoreThan100(ElementsNumber));
+        Console.WriteLine("Массив, из которого удалили повторяющиеся элементы: " + oneD.DeleteTheRepeating(ElementsNumber));
 
-    public int countAverage(int colN, int[] lengths)
-    {
-        int m = 0;
-        int num = 0;
+        //ступенчатые
+        Console.WriteLine("Ступенчатые  массивы");
+        bool WayInpStepped;
+        Console.WriteLine("Хотите сами ввести массив? + = да, - = нет");
+        if (Console.ReadLine() == "+")
+        {
+            WayInpStepped = true;
+        }
+        else
+        {
+            WayInpStepped = false;
+        }
+        Console.WriteLine("Введите количество строк");
+        int colN = int.Parse(Console.ReadLine());
+        int[] lengths = new int[100];
         for (int i = 0; i < colN; i++)
         {
-            for (int j = 0; j < lengths[i]; j++)
-            {
-                m += array[i][j];
-                num++;
-            }
+            Console.WriteLine("Сколько элементов в строке " + (i + 1) + "?");
+            lengths[i] = int.Parse(Console.ReadLine());
         }
-        return m / num;
+        SteppedArray st = new SteppedArray(colN, lengths);
+        st.SteppedINP(WayInpStepped, colN, lengths);
+        st.SteppedOUTPUT(colN);
+        Console.WriteLine("Среднее арифметическое элементов: " + st.countAverage(colN, lengths));
+        Console.WriteLine("Средние арифметические строк массива");
+        st.AverageInEveryStepped(colN);
+        Console.WriteLine("Массив, в котором четные по значению элементы массива заменены на произведения их индексов");
+        st.ChangeInd(colN);
+        st.SteppedOUTPUT(colN);
     }
-
-    public void ChangeInd(int colN)
-    {
-        for (int i = 0; i < colN; i++)
-        {
-            int lineM = array[i].Length;
-            for (int j = 0; j < lineM; j++)
-            {
-                if (array[i][j] % 2 == 0)
-                    if (array[i][j] % 2 == 0)
-                    {
-                        array[i][j] = i * j;
-                        array[i][j] = i * j;
-                    }
-            }
-
-        }
-    }
-    public void AverageInEveryStepped(int colN)
-    {
-        for (int i = 0; i < colN; i++)
-        {
-            int num = 0;
-            int sum = 0;
-            int lineM = array[i].Length;
-            for (int j = 0; j < lineM; j++)
-            {
-                num++;
-                sum += array[i][j];
-            }
-            Console.WriteLine(sum / num);
-
-        }
-    }
-
-    public void SteppedOUTPUT(int colN)
-    {
-        for (int i = 0; i < colN; i++)
-        {
-            int lineM = array[i].Length;
-            for (int j = 0; j < lineM; j++)
-            {
-                Console.Write(array[i][j] + " ");
-            }
-            Console.WriteLine();
-
-        }
-    }
-
 }
-
-}
-
